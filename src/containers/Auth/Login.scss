@@ -1,0 +1,149 @@
+.login-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    // background: rgb(34, 193, 195);
+    background: linear-gradient(135deg,
+            rgba(34, 193, 195, 1) 0%,
+            rgba(253, 187, 45, 1) 100%);
+
+    .login-container {
+        padding: 0 3rem;
+        max-width: 500px;
+        min-width: 300px;
+        max-height: 700px;
+        width: 30%;
+        height: 70%;
+        background-color: #FFFFFF;
+        border-radius: 25px;
+
+        .login-content {
+
+            .headerTitle {
+                padding: 2rem 0;
+                font-size: 2rem;
+                font-weight: 700;
+            }
+
+            .login-input {
+                padding-top: 2rem;
+
+                .label-input {
+                    padding-left: 28px;
+                    color: rgba(187, 187, 187, 0.9);
+                }
+
+                input {
+                    padding-left: 1.8rem;
+                    padding-bottom: 1rem;
+                    font-size: 1.3rem;
+                    border: none;
+                    box-shadow: inset 0px -3px 0px 0px rgba(187, 187, 187, 0.2);
+                    transition: box-shadow 0.2s ease-in;
+
+                    &:focus {
+                        box-shadow: inset 0px -3px 0px 0px rgba(34, 193, 195, 0.7);
+                        outline: none;
+                    }
+
+                    &:hover::-webkit-input-placeholder,
+                    &:focus::-webkit-input-placeholder {
+                        opacity: 0;
+                    }
+
+
+                }
+
+                input::-webkit-input-placeholder {
+                    opacity: 1;
+                    transition: opacity 0.25s ease-out;
+                }
+
+            }
+
+            .login-btn {
+                padding-top: 2rem;
+                padding-bottom: 1rem;
+
+                button {
+                    width: 100%;
+                    height: 40px;
+                    border-radius: 25px;
+                    border: none;
+                    font-size: 1.3rem;
+                    font-weight: 700;
+                    background: rgb(34, 193, 195);
+                    background: linear-gradient(90deg, rgba(34, 193, 195, 1) 0%, rgba(253, 187, 45, 1) 100%);
+                    transition: opacity 0.25s ease-out;
+                    color: white;
+
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+            }
+
+            .forgot-password {
+                float: inline-end;
+                font-size: 12px;
+                margin-right: 4px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .alternativeLogin {
+                text-align: center;
+                padding-top: 2rem;
+                margin-top: 1.5rem;
+
+                label {
+                    font-size: 16px;
+                }
+
+                .icon-social-group {
+                    display: flex;
+                    justify-content: center;
+                    padding-top: 2rem;
+
+                    .social-icon {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 50%;
+                        color: white;
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+
+                    .google-icon {
+                        margin: 0 8px;
+                        font-size: 24px;
+                        background-color: #ed3c35;
+                    }
+
+                    .facebook-icon {
+                        margin: 0 8px;
+                        font-size: 24px;
+                        background-color: #37559b;
+                    }
+
+                    .twitter-icon {
+                        margin: 0 8px;
+                        font-size: 24px;
+                        background-color: #259eee;
+                    }
+
+                }
+            }
+        }
+
+
+    }
+}
