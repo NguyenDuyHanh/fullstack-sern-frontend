@@ -81,7 +81,7 @@ class Login extends Component {
                                 <span
                                     onClick={() => this.handleShowHidePassword()}
                                 >
-                                    <i className={this.state.isShowPassword ? "fa fa-eye-slash" : "fa fa-eye"}></i>
+                                    <i className={this.state.isShowPassword ? "fa-solid fa-eye-slash" : "fa-solid fa-eye"}></i>
                                 </span>
                             </div>
                         </div>

@@ -1,0 +1,40 @@
+.modal-dialog.modal-user-container {
+    .modal-content {
+        .modal-header {
+            height: 60px;
+            .modal-title {
+                margin-left: 4px;
+                font-size: 24px;
+            }
+            .close {
+                background-color: transparent;
+                margin-right: -8px;
+                border: none;
+                padding: 4px 14px;
+                line-height: 100%;
+                font-size: 20px;
+            
+                span {
+                    font-size: 40px;
+                    color: white;
+                }
+            }
+        }
+
+        .modal-body {
+            form {
+                div {
+                    label {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+
+        .modal-footer {
+            button {
+                height: 36px;
+            }
+        }
+    }
+}
