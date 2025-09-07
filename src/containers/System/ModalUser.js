@@ -15,18 +15,32 @@ class ModalUser extends Component {
                 firstName: '',
                 lastName: '',
                 address: '',
-                phoneNumber: '',
+                phonenumber: '',
                 gender: '',
                 image: '',
                 roleId: '',
                 positionId: ''
             },
             formErrors: {},
-            isSubmit: false
+            isSubmit: false,
         }
     }
 
     componentDidMount() {
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.userEditData && this.props.userEditData !== prevProps.userEditData) {
+            this.setState({
+                formValues: {
+                    ...this.props.userEditData,
+                }
+            });
+        }
+        // Nếu userEditData = null => reset form về rỗng
+        // if (!this.props.userEditData && prevProps.userEditData !== this.props.userEditData) {
+        //     this.resetForm();
+        // }
     }
 
     handleChangeInput(e) {
@@ -39,19 +53,24 @@ class ModalUser extends Component {
         })
     }
 
-    handleAddNewUser = async (e) => {
+    handleSave = async (e) => {
         e.preventDefault();
         const errors = this.validate(this.state.formValues);
         this.setState({
             formErrors: errors,
             isSubmit: true
         })
-        if(Object.keys(errors).length === 0) {
-            await this.props.createNewUser(this.state.formValues);
+        if (Object.keys(errors).length === 0) {
+            if (!this.props.userEditData.id) {
+                await this.props.createNewUser(this.state.formValues);
+            } else if (this.props.userEditData) {
+                await this.props.updateUser(this.state.formValues);
+            }
+
         }
     }
 
-    resetForm() {
+    resetForm = () => {
         this.setState({
             formValues: {
                 email: '',
@@ -59,7 +78,7 @@ class ModalUser extends Component {
                 firstName: '',
                 lastName: '',
                 address: '',
-                phoneNumber: '',
+                phonenumber: '',
                 gender: '',
                 image: '',
                 roleId: '',
@@ -73,15 +92,17 @@ class ModalUser extends Component {
     validate = (values) => {
         const errors = {};
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-        if (!values.email) {
-            errors.email = 'Email is required';
-        } else if (!regex.test(values.email)) {
-            errors.email = 'This is not a valid email format!'
-        }
-        if (!values.password) {
-            errors.password = 'Password is required';
-        } else if (values.password.length < 7) {
-            errors.password = 'Password must be 8 characters'
+        if (!values.id) {
+            if (!values.email) {
+                errors.email = 'Email is required';
+            } else if (!regex.test(values.email)) {
+                errors.email = 'This is not a valid email format!'
+            }
+            if (!values.password) {
+                errors.password = 'Password is required';
+            } else if (values.password.length < 7) {
+                errors.password = 'Password must be 8 characters'
+            }
         }
         if (!values.firstName) {
             errors.firstName = 'First name is required';
@@ -89,13 +110,15 @@ class ModalUser extends Component {
         if (!values.lastName) {
             errors.lastName = 'Last name is required';
         }
-        if (!values.phoneNumber) {
-            errors.phoneNumber = 'Phone number is required';
+        if (!values.phonenumber) {
+            errors.phonenumber = 'Phone number is required';
+        } else if (values.phonenumber.length !== 10) {
+            errors.phonenumber = 'This is not a valid phone number format';
         }
         if (!values.address) {
             errors.address = 'Phone number is required';
         }
-        if (!values.gender) {
+        if (values.gender === null || values.gender === undefined || values.gender === "") {
             errors.gender = 'Gender is required';
         }
         if (!values.image) {
@@ -125,39 +148,43 @@ class ModalUser extends Component {
                     <ModalHeader
                         toggle={this.props.toggleFromParent}
                     >
-                        Create new user
+                        {this.props.modalTitle}
                     </ModalHeader>
                     <ModalBody>
                         <form className="p-3 border rounded">
-                            <div className="mb-3">
-                                <label>Email</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    className="form-control"
-                                    value={formValues.email}
-                                    onChange={(e) => this.handleChangeInput(e)}
-                                    required
-                                />
-                                {this.state.isSubmit && formErrors.email && (
-                                    <span className='text-danger'>{formErrors.email}</span>
-                                )}
-                            </div>
+                            {!this.props.userEditData && (
+                                <>
+                                    <div className="mb-3">
+                                        <label>Email</label>
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            className="form-control"
+                                            value={formValues.email}
+                                            onChange={(e) => this.handleChangeInput(e)}
+                                            required
+                                        />
+                                        {this.state.isSubmit && formErrors.email && (
+                                            <span className='text-danger'>{formErrors.email}</span>
+                                        )}
+                                    </div>
 
-                            <div className="mb-3">
-                                <label>Password</label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    className="form-control"
-                                    value={formValues.password}
-                                    onChange={(e) => this.handleChangeInput(e)}
-                                    required
-                                />
-                                {this.state.isSubmit && formErrors.password && (
-                                    <span className='text-danger'>{formErrors.password}</span>
-                                )}
-                            </div>
+                                    <div className="mb-3">
+                                        <label>Password</label>
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            className="form-control"
+                                            value={formValues.password || ""}
+                                            onChange={(e) => this.handleChangeInput(e)}
+                                            required
+                                        />
+                                        {this.state.isSubmit && formErrors.password && (
+                                            <span className='text-danger'>{formErrors.password}</span>
+                                        )}
+                                    </div>
+                                </>
+                            )}
 
                             <div className="row">
                                 <div className="col-md-6 mb-3">
@@ -206,13 +233,13 @@ class ModalUser extends Component {
                                 <label>Phone Number</label>
                                 <input
                                     type="text"
-                                    name="phoneNumber"
+                                    name="phonenumber"
                                     className="form-control"
-                                    value={formValues.phoneNumber}
+                                    value={formValues.phonenumber}
                                     onChange={(e) => this.handleChangeInput(e)}
                                 />
-                                {this.state.isSubmit && formErrors.phoneNumber && (
-                                    <span className='text-danger'>{formErrors.phoneNumber}</span>
+                                {this.state.isSubmit && formErrors.phonenumber && (
+                                    <span className='text-danger'>{formErrors.phonenumber}</span>
                                 )}
                             </div>
 
@@ -296,8 +323,8 @@ class ModalUser extends Component {
                         <Button
                             className='px-4'
                             color="primary"
-                            onClick={(e) => this.handleAddNewUser(e)}>
-                            Save
+                            onClick={(e) => this.handleSave(e)}>
+                            {this.props.btnLabel}
                         </Button>{' '}
                         <Button
                             className='px-3'

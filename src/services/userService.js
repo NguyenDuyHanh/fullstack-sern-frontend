@@ -22,5 +22,15 @@ const createNewUserSevice = (userData) => {
     );
 }
 
+const deleteUserService = (userId) => {
+    return axios.delete(`/api/delete-user`, {
+        params: { id: userId }
+    });
+};
 
-export default {handleLoginAPI, getAllUsers, createNewUserSevice}
+const updateUserService = (userData) => {
+    return axios.put('http://localhost:8080/api/update-user', userData);
+};
+
+
+export default {handleLoginAPI, getAllUsers, createNewUserSevice, deleteUserService, updateUserService}

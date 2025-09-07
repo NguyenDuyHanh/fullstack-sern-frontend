@@ -12,7 +12,8 @@ class UserManage extends Component {
         super(props);
         this.state = {
             arrUsers: [],
-            isOpenModalUser: false
+            isOpenModalUser: false,
+            userEditData: null
         }
     }
 
@@ -34,13 +35,21 @@ class UserManage extends Component {
 
     handAddNewUser = () => {
         this.setState({
-            isOpenModalUser: true
+            isOpenModalUser: true,
+        })
+    }
+
+    handleEditUser = (user) => {
+        this.setState({
+            isOpenModalUser: true,
+            userEditData: user
         })
     }
 
     toggleModalUser = () => {
         this.setState({
-            isOpenModalUser: !this.state.isOpenModalUser
+            isOpenModalUser: false,
+            userEditData: null
         })
     }
 
@@ -70,7 +79,38 @@ class UserManage extends Component {
                 });
             }
         } catch (error) {
-            console.log(error);
+            toast.error(error.message);
+        }
+    }
+
+    updateUser = async (userData) => {
+        try {
+            const response = await userService.updateUserService(userData);
+            if(response && response.errCode !== 0) {
+                toast.error(response.message);
+            } else {
+                this.setState({
+                    isOpenModalUser: false
+                })
+                await this.getAllUsers();
+                toast.success(response.message);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    deleteUser = async (userId) => {
+        try {
+            const response = await userService.deleteUserService(userId);
+            if (response && response.errCode !== 0) {
+                toast.error(response.message);
+            } else {
+                await this.getAllUsers();
+                toast.success(response.message);
+            }
+        } catch (error) {
+            toast.error(error.message);
         }
     }
 
@@ -84,7 +124,12 @@ class UserManage extends Component {
                     isOpen={this.state.isOpenModalUser}
                     toggleFromParent={this.toggleModalUser}
                     createNewUser={this.createNewUser}
+                    btnLabel={this.state.userEditData ? "Save change" : "Save"}
+                    modalTitle={this.state.userEditData ? "Update user data" : "Create new user"}
+                    userEditData={this.state.userEditData}
+                    updateUser={this.updateUser}
                 />
+
                 <div className='mt-3 ms-3 btn-add-new-user'>
                     <button
                         className='btn btn-primary ps-3 pe-3'
@@ -101,6 +146,7 @@ class UserManage extends Component {
                                 <th>Email</th>
                                 <th>First name</th>
                                 <th>Last name</th>
+                                <th>Gender</th>
                                 <th>Address</th>
                                 <th>Phone number</th>
                                 <th>Actions</th>
@@ -113,11 +159,24 @@ class UserManage extends Component {
                                         <td>{user.email}</td>
                                         <td>{user.firstName}</td>
                                         <td>{user.lastName}</td>
+                                        <td>{user.gender === 0 ? 'Nam' : 'Nữ'}</td>
                                         <td>{user.address}</td>
                                         <td>{user.phonenumber}</td>
                                         <td>
-                                            <button type="button" className="btn btn-warning me-2 ps-2 pe-2"><i className="fa-solid fa-pen-to-square text-light"></i></button>
-                                            <button type="button" className="btn btn-danger ps-2 pe-2"><i className="fa-solid fa-trash-arrow-up"></i></button>
+                                            <button
+                                                onClick={() => this.handleEditUser(user)}
+                                                type="button"
+                                                className="btn btn-warning me-2 ps-2 pe-2"
+                                            >
+                                                <i className="fa-solid fa-pen-to-square text-light"></i>
+                                            </button>
+                                            <button
+                                                onClick={() => this.deleteUser(user.id)}
+                                                type="button"
+                                                className="btn btn-danger ps-2 pe-2"
+                                            >
+                                                <i className="fa-solid fa-trash-arrow-up"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 )
