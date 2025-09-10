@@ -1,0 +1,19 @@
+.banner-container {
+    background-color: #93d7ee;
+    padding-bottom: 36px;
+
+    .banner-content {
+
+        width: var(--default-layout-width);
+
+        .banner-title {
+            margin-top: 28px;
+            margin-bottom: 0;
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        
+    }
+}

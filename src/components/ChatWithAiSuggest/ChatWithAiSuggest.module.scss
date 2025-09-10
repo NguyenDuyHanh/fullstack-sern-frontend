@@ -1,0 +1,23 @@
+.chat-ai-suggest-container {
+    margin-top: 40px;
+    .chat-ai-suggest-item {
+        border-radius: 12px;
+        img {
+            width: 56px;
+            height: 56px;
+        }
+        .chat-container {
+            .chat-title {
+                font-size: 20px;
+                font-weight: 700;
+                line-height: 1.5;
+
+            }
+            .chat-describe {
+                font-size: 20px;
+                line-height: 1.5;
+                font-weight: 500;
+            }
+        }
+    }
+}

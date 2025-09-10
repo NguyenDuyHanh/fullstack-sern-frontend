@@ -6,6 +6,7 @@ import './styles/styles.scss';
 import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
 import IntlProviderWrapper from "./hoc/IntlProviderWrapper";
+import GlobalStyles from './components/GlobalStyles';
 
 
 import { Provider } from 'react-redux';
@@ -15,7 +16,9 @@ const renderApp = () => {
     ReactDOM.render(
         <Provider store={reduxStore}>
             <IntlProviderWrapper>
-                <App persistor={persistor}/>
+                <GlobalStyles>
+                    <App persistor={persistor}/>
+                </GlobalStyles>
             </IntlProviderWrapper>
         </Provider>,
         document.getElementById('root')
